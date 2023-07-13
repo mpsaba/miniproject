@@ -1,197 +1,3 @@
-
-
-// const treasures = [
-//     {
-//         id:  100,
-//         latitude: "14.54376481",
-//         longitude: "121.0199117",
-//         name: "T1"
-//     },    
-//     {
-//         id:  101,
-//         latitude: "14.55320766",
-//         longitude: "121.0557745",
-//         name: "T2"
-//     },
-//     {
-//         id:  102,
-//         latitude: "14.54464357",
-//         longitude: "121.0203656",
-//         name: "T3"
-//     },
-//     {
-//         id:  103,
-//         latitude: "14.58726159",
-//         longitude: "120.9795048",
-//         name: "T4"
-//     },
-//     {
-//         id:  104,
-//         latitude: "14.57320327",
-//         longitude: "121.023090",
-//         name: "T5"
-//     },
-//     {
-//         id:  105,
-//         latitude: "14.52311313",
-//         longitude: "121.0194573",
-//         name: "T6"
-//     },
-//     {
-//         id:  106,
-//         latitude: "14.60242292",
-//         longitude: "121.0115134",
-//         name: "T7"
-//     },
-//     {
-//         id:  107,
-//         latitude: "14.60857463",
-//         longitude: "121.0185514",
-//         name: "T8"
-//     },
-//     {
-//         id:  108,
-//         latitude: "14.49111434",
-//         longitude: "121.0437482",
-//         name: "T9"
-//     },
-//     {
-//         id:  109,
-//         latitude: "14.54455953",
-//         longitude: "121.1060883",
-//         name: "T10"
-//     }
-// ]
-
-
-// const amounts = [
-//     {
-//         id: 1,
-//         treasureId: 100,
-//         amt: 15
-//     },
-//     {
-//         id: 2,
-//         treasureId: 101,
-//         amt: 10
-//     },
-//     {
-//         id: 3,
-//         treasureId: 102,
-//         amt: 15
-//     },
-//     {
-//         id: 4,
-//         treasureId: 103,
-//         amt: 15
-//     },
-//     {
-//         id: 5,
-//         treasureId: 104,
-//         amt: 10
-//     },
-//     {
-//         id: 6,
-//         treasureId: 105,
-//         amt: 15
-//     },
-//     {
-//         id: 7,
-//         treasureId: 106,
-//         amt: 15
-//     },
-//     {
-//         id: 8,
-//         treasureId: 107,
-//         amt: 10
-//     },
-//     {
-//         id: 9,
-//         treasureId: 108,
-//         amt: 15
-//     },
-//     {
-//         id: 10,
-//         treasureId: 109,
-//         amt: 15
-//     },
-//     {
-//         id: 11,
-//         treasureId: 110,
-//         amt: 10
-//     },
-//     {
-//         id: 12,
-//         treasureId: 111,
-//         amt: 15
-//     },
-//     {
-//         id: 13,
-//         treasureId: 112,
-//         amt: 15
-//     },
-//     {
-//         id: 14,
-//         treasureId: 113,
-//         amt: 10
-//     },
-//     {
-//         id: 15,
-//         treasureId: 114,
-//         amt: 15
-//     },
-//     {
-//         id: 16,
-//         treasureId: 115,
-//         amt: 15
-//     },
-//     {
-//         id: 17,
-//         treasureId: 116,
-//         amt: 10
-//     },
-//     {
-//         id: 18,
-//         treasureId: 117,
-//         amt: 15
-//     },
-//     {
-//         id: 19,
-//         treasureId: 100,
-//         amt: 20
-//     },
-//     {
-//         id: 20,
-//         treasureId: 101,
-//         amt: 25
-//     },
-//     {
-//         id: 21,
-//         treasureId: 102,
-//         amt: 20
-//     },    
-//     {
-//         id: 22,
-//         treasureId: 103,
-//         amt: 25
-//     },
-//     {
-//         id: 23,
-//         treasureId: 107,
-//         amt:30
-//     },
-//     {
-//         id: 24,
-//         treasureId: 108,
-//         amt:30
-//     },
-//     {
-//         id: 25,
-//         treasureId: 109,
-//         amt:30
-//     },
-// ]
-
 const geolib = require('geolib');
 
 
@@ -334,10 +140,12 @@ module.exports = {
     },
 
     checkRequiredFields: function(params){
+        console.log("checkRequiredFields");
+        console.log(params);
         if(params.latitude && params.longitude && params.distance){//check required fields
-            if(params.prize || params.prize == 0){
-                if(params.prize >= 10 && params.prize <=30 && params.prize%1 == 0){ // check prize if valid
-                    if(params.distance == 1 || params.distance == 10){   //check distance if valid
+            if(params.distance == 1 || params.distance == 10){   //check distance if valid
+                if(params.prize || params.prize == 0){
+                    if(params.prize >= 10 && params.prize <=30 && params.prize%1 == 0){ // check prize if valid
                         return {
                             error: false,
                             prize: params.prize
@@ -345,21 +153,22 @@ module.exports = {
                     }else{
                         return {
                             error: true,
-                            message: "Please enter valid distance. It can only be 1 or 10."
+                            message: "The prize value only accepts a range of $10 to $30 and only whole numbers."
                         }
-                    } 
+                    }
                 }else{
                     return {
-                        error: true,
-                        message: "The prize value only accepts a range of $10 to $30 and only whole numbers."
+                        error: false,
+                        prize: undefined
                     }
                 }
+
             }else{
                 return {
-                    error: false,
-                    prize: undefined
+                    error: true,
+                    message: "Please enter valid distance. It can only be 1 or 10."
                 }
-            }
+            } 
         }else{
             return {
                 error: true,
@@ -367,8 +176,6 @@ module.exports = {
             }
         }
     }
-
-
 }
 
 
